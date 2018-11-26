@@ -1,0 +1,178 @@
+ALGORITHME chiffresromains
+
+BUT : écrire un algorithme qui permet à l'utilisateur de convertir un nombre écrit en chiffres arabes en un nombre écrit en chiffres romains et vice-versa.
+
+ENTREES : nombre en chiffres arabes ou romains
+
+SORTIES : nombre en chiffres arabes ou romains
+
+-------------------------------------------------------------------------------------------------
+procedure affichage2(VAR res : ENTIER)
+VAR
+DEBUT
+	ECRIRE(res)
+	main()
+FINPROCEDURE
+-------------------------------------------------------------------------------------------------
+procedure affichage(VAR unit,diz,cent,mil :STRING)
+VAR
+DEBUT
+	ECRIRE(mil+cent+diz+unit)
+	main()
+FINPROCEDURE
+-------------------------------------------------------------------------------------------------
+procedure romara(VAR nr : CHAINE)
+VAR
+res,lastadd,i,m : ENTIER
+DEBUT
+   m<-LONGUEUR(nr)
+    POUR i<-m-1 A 0 (PAS -1)
+        SI ((nr[i]='I')OU(nr[i]='i'))
+            SI (lastadd>1)
+                res<-res-1
+            SINON
+                res<-res+1
+                lastadd<-1
+            FINSI
+        SINON SI ((nr[i]='V')OU(nr[i]='v'))
+                res<-res+5
+                lastadd<-5
+        SINON SI ((nr[i]='X')OU(nr[i]='x'))
+            SI ((lastadd=50)OU(lastadd=100))
+                res<-res-10
+            SINON
+               res<-res+10
+                lastadd<-10
+            FINSI
+        SINON SI ((nr[i]='L')OU(nr[i]='l'))
+                res<-res+50
+                lastadd<-50
+        SINON SI ((nr[i]='C')OU(nr[i]='c'))
+            SI ((lastadd=500)OU(lastadd=1000))
+                res<-res-100
+            SINON
+                res<-res+100
+                lastadd<-100
+            FINSI
+        SINON SI ((nr[i]='D')OU(nr[i]='d'))
+                res<-res+500
+                lastadd<-500
+        SINON SI ((nr[i]='M')OU(nr[i]='m'))
+                res<-res+1000
+                lastadd<-1000
+        FINSI
+    FINPOUR
+    affichage2(res)
+FINPROCEDURE
+-------------------------------------------------------------------------------------------------
+procedure ararom(VAR nombre : ENTIER)
+VAR
+lg,cpt : ENTIER
+nb,unit,diz,cent,mil : STRING
+DEBUT
+	nb<-INTTOSTR(nombre)
+	lg<-LONGUEUR(nombre)
+	POUR cpt<-lg-1 A 0 (PAS -1) FAIRE
+		SI cpt=lg
+			CAS nombre[cpt] PARMI
+				1 : unit<-"I"
+				2 : unit<-"II"
+				3 : unit<-"III"
+				4 : unit<-"IV"
+				5 : unit<-"V"
+				6 : unit<-"VI"
+				7 : unit<-"VII"
+				8 : unit<-"VIII"
+				9 : unit<-"IX"
+				0 : unit<-""
+				
+			SINON SI cpt=lg-1
+				CAS nombre[cpt] PARMI
+				1 : diz<-"X"
+				2 : diz<-"XX"
+				3 : diz<-"XXX"
+				4 : diz<-"XL"
+				5 : diz<-"L"
+				6 : diz<-"LX"
+				7 : diz<-"LXX"
+				8 : diz<-"LXXX"
+				9 : diz<-"XC"
+				0 : diz<-""
+			FINSI
+			SINON SI cpt=lg-2
+				CAS nombre[cpt] PARMI
+				1 : cent<-"C"
+				2 : cent<-"CC"
+				3 : cent<-"CCC"
+				4 : cent<-"CD"
+				5 : cent<-"D"
+				6 : cent<-"DC"
+				7 : cent<-"DCC"
+				8 : cent<-"DCCC"
+				9 : cent<-"CM"
+				0 : cent<-""
+				
+			SINON SI cpt=lg-3
+				CAS nombre[cpt] PARMI
+				1 : mil<-"M"
+				2 : mil<-"MM"
+				3 : mil<-"MMM"
+			FINSI
+		FINSI
+	FINPOUR
+affichage(mil,cent,diz,unit)
+FINFONCTION
+--------------------------------------------------------------------------------------------------
+procedure saisiearabes()
+VAR
+nombre : ENTIER
+DEBUT
+	REPETER
+		ECRIRE("Veuillez saisir un nombre en chiffres arabes")
+		LIRE(nombre)
+	JUSQU'A (nombre>=3999 ET nombre<0)
+    mi = nombre / 1000
+    ce = (nombre % 1000)/100
+    di = ((nombre % 1000)%100)/10
+    un = (((nombre % 1000)%100)%10)/1
+	ararom(un : ENTIER,di : ENTIER,ce : ENTIER,mi : ENTIER)
+FINPROCEDURE
+--------------------------------------------------------------------------------------------------
+procedure saisieromains()
+VAR
+nombre : CHAINE
+DEBUT
+	ECRIRE("Veuillez saisir un nombre en chiffres romains")
+	LIRE(nr)
+	romara(nr)
+FINPROCEDURE
+--------------------------------------------------------------------------------------------------
+procedure choix()
+VAR
+ch : ENTIER
+DEBUT
+	REPETER
+		ECRIRE("Tapez 1 pour convertir des chiffres romains en chiffres arabes")
+		ECRIRE("Tapez 2 pour convertir des chiffres arabes en chiffres romains")
+		LIRE(ch)
+	JUSQU'A ((ch=1)OU(ch=2))
+
+	SI ch=1 ALORS
+		saisieromains()
+	SINON
+		saisiearabes()
+	FINSI
+FINPROCEDURE
+-------------------------------------------------------------------------------------------------
+//////////////////////////////////PROGRAMME PRINCIPAL////////////////////////////////////////////
+VAR
+	deb : ENTIER;
+DEBUT
+	ECRIRE("Tapez 1 pour continuer, tapez n'importe quoi d'autre pour quitter.")
+	LIRE(deb)
+	SI deb=1 ALORS
+		choix()
+	FINSI
+FIN.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
